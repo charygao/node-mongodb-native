@@ -278,7 +278,7 @@ export class MongoClient extends EventEmitter implements OperationParent {
     this.originalUri = url;
     this.originalOptions = options;
 
-    this.options = parseOptions(url, options);
+    // this.options = parseOptions(url, options);
 
     // The internal state
     this.s = {

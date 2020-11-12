@@ -18,10 +18,10 @@ import type {
   MongoOptions,
   PkFactory
 } from './mongo_client';
-import { MongoCredentials } from './cmap/auth/mongo_credentials';
 import type { TagSet } from './sdam/server_description';
 import { Logger, LoggerLevel } from './logger';
 import { ObjectId } from 'bson';
+import { MongoCredentials } from './cmap/auth/mongo_credentials';
 
 /**
  * The following regular expression validates a connection string and breaks the

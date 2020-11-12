@@ -27,10 +27,10 @@ import type { Server } from '../sdam/server';
 import type { MongoCredentials } from './auth/mongo_credentials';
 import type { CommandOptions } from './wire_protocol/command';
 import type { GetMoreOptions } from './wire_protocol/get_more';
-import type { InsertOptions, UpdateOptions, RemoveOptions } from './wire_protocol/index';
 import type { Stream } from './connect';
 import type { LoggerOptions } from '../logger';
 import type { QueryOptions } from './wire_protocol/query';
+import type { WriteCommandOptions } from './wire_protocol/write_command';
 
 const kStream = Symbol('stream');
 const kQueue = Symbol('queue');
@@ -265,15 +265,15 @@ export class Connection extends EventEmitter {
     wp.killCursors(makeServerTrampoline(this), ns, cursorIds, options, callback);
   }
 
-  insert(ns: string, ops: Document[], options: InsertOptions, callback: Callback): void {
+  insert(ns: string, ops: Document[], options: WriteCommandOptions, callback: Callback): void {
     wp.insert(makeServerTrampoline(this), ns, ops, options, callback);
   }
 
-  update(ns: string, ops: Document[], options: UpdateOptions, callback: Callback): void {
+  update(ns: string, ops: Document[], options: WriteCommandOptions, callback: Callback): void {
     wp.update(makeServerTrampoline(this), ns, ops, options, callback);
   }
 
-  remove(ns: string, ops: Document[], options: RemoveOptions, callback: Callback): void {
+  remove(ns: string, ops: Document[], options: WriteCommandOptions, callback: Callback): void {
     wp.remove(makeServerTrampoline(this), ns, ops, options, callback);
   }
 }

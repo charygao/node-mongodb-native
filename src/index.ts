@@ -109,7 +109,7 @@ export type {
   OperationTime,
   ResumeOptions
 } from './change_stream';
-export type { AuthMechanism } from './cmap/auth/defaultAuthProviders';
+export type { AuthMechanism, AuthMechanismEnum } from './cmap/auth/defaultAuthProviders';
 export type { MongoCredentials, MongoCredentialsOptions } from './cmap/auth/mongo_credentials';
 export type {
   WriteProtocolMessageType,
@@ -138,11 +138,7 @@ export type { StreamDescription, StreamDescriptionOptions } from './cmap/stream_
 export type { CommandOptions } from './cmap/wire_protocol/command';
 export type { CompressorName, Compressor } from './cmap/wire_protocol/compression';
 export type { GetMoreOptions } from './cmap/wire_protocol/get_more';
-export type {
-  InsertOptions as WireInsertOptions,
-  UpdateOptions as WireUpdateOptions,
-  RemoveOptions as WireRemoveOptions
-} from './cmap/wire_protocol/index';
+export type { QueryOptions } from './cmap/wire_protocol/query';
 export type { CollationOptions, WriteCommandOptions } from './cmap/wire_protocol/write_command';
 export type { CollectionPrivate, CollectionOptions } from './collection';
 export type { AggregationCursorOptions } from './cursor/aggregation_cursor';
@@ -178,6 +174,7 @@ export type {
   PkFactory,
   MongoURIOptions,
   LogLevel,
+  LogLevelEnum,
   Auth,
   DriverInfo
 } from './mongo_client';
@@ -234,13 +231,14 @@ export type { UpdateResult, UpdateOptions } from './operations/update';
 export type { ValidateCollectionOptions } from './operations/validate_collection';
 export type {
   ReadConcern,
-  ReadConcernLevel,
   ReadConcernLike,
-  ReadConcernLevelLike
+  ReadConcernLevelEnum,
+  ReadConcernLevel
 } from './read_concern';
 export type {
   ReadPreferenceLike,
   ReadPreferenceMode,
+  ReadPreferenceModeEnum,
   ReadPreferenceOptions,
   ReadPreferenceLikeOptions,
   ReadPreferenceFromOptions,

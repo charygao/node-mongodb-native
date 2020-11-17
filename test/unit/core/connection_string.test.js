@@ -334,6 +334,19 @@ describe('Connection String', function () {
               });
             }
           });
+
+          it(`${test.description} -- new MongoOptions parser`, function () {
+            if (skipTests.includes(test.description)) {
+              return this.skip();
+            }
+
+            const valid = test.valid;
+            if (valid) {
+              expect(parseOptions(test.uri), `"${test.uri}"`).to.be.ok;
+            } else {
+              expect(() => parseOptions(test.uri), `"${test.uri}"`).to.throw();
+            }
+          });
         });
       });
     });

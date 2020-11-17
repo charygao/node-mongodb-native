@@ -78,7 +78,6 @@ const validOptionNames = [
   'retryReads',
   'useNewUrlParser',
   'serverSelectionTimeoutMS',
-  'useRecoveryToken',
   'autoEncryption',
   'driverInfo',
   'tls',
@@ -209,7 +208,6 @@ export function connect(
     if (finalOptions.socketTimeoutMS == null) finalOptions.socketTimeoutMS = 0;
     if (finalOptions.connectTimeoutMS == null) finalOptions.connectTimeoutMS = 10000;
     if (finalOptions.retryWrites == null) finalOptions.retryWrites = true;
-    if (finalOptions.useRecoveryToken == null) finalOptions.useRecoveryToken = true;
     if (finalOptions.readPreference == null) finalOptions.readPreference = 'primary';
 
     if (finalOptions.db_options && finalOptions.db_options.auth) {

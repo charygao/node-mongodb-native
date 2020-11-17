@@ -195,6 +195,8 @@ export interface MongoClientOptions
 
   dbName?: string;
   useRecoveryToken?: boolean;
+  username?: string;
+  password?: string;
 }
 
 /** @public */

@@ -131,7 +131,6 @@ export interface MongoURIOptions {
   retryWrites?: boolean;
   /** Allow a driver to force a Single topology type with a connection string containing one host */
   directConnection?: boolean;
-  // TODO: but now mongo client options accept these at the top level...
   /** The journal write concern */
   journal?: boolean;
   /** The write concern */

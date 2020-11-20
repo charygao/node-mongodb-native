@@ -8,7 +8,6 @@ import type { Document, BSONSerializeOptions } from '../../bson';
 import type { Server } from '../../sdam/server';
 import type { Topology } from '../../sdam/topology';
 import type { ReadPreferenceLike } from '../../read_preference';
-import type { WriteConcernOptions, WriteConcern, W } from '../../write_concern';
 import type { WriteCommandOptions } from './write_command';
 
 /** @public */
@@ -28,9 +27,6 @@ export interface CommandOptions extends BSONSerializeOptions {
 
   // FIXME: NODE-2802
   willRetryWrite?: boolean;
-
-  // FIXME: NODE-2781
-  writeConcern?: WriteConcernOptions | WriteConcern | W;
 }
 
 function isClientEncryptionEnabled(server: Server) {

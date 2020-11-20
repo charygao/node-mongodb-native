@@ -65,7 +65,7 @@ describe('Promises (Collection)', function () {
         // BEGIN
         // Get the collection
         var col = db.collection('find_one_and_delete_with_promise_no_option');
-        col.insertMany([{ a: 1, b: 1 }], { w: 1 }).then(function (r) {
+        col.insertMany([{ a: 1, b: 1 }], { writeConcern: { w: 1 } }).then(function (r) {
           test.equal(1, r.result.n);
 
           col
@@ -111,7 +111,7 @@ describe('Promises (Collection)', function () {
         // BEGIN
         // Get the collection
         var col = db.collection('find_one_and_update_with_promise_no_option');
-        col.insertMany([{ a: 1, b: 1 }], { w: 1 }).then(function (r) {
+        col.insertMany([{ a: 1, b: 1 }], { writeConcern: { w: 1 } }).then(function (r) {
           test.equal(1, r.result.n);
 
           col
@@ -159,7 +159,7 @@ describe('Promises (Collection)', function () {
           // BEGIN
           // Get the collection
           var col = db.collection('find_one_and_replace_with_promise_no_option');
-          col.insertMany([{ a: 1, b: 1 }], { w: 1 }).then(function (r) {
+          col.insertMany([{ a: 1, b: 1 }], { writeConcern: { w: 1 } }).then(function (r) {
             test.equal(1, r.result.n);
 
             col

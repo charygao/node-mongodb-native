@@ -296,7 +296,9 @@ describe('Promises (Collection)', function () {
       const client = configuration.newClient(url);
       client.connect().then(function (client) {
         var db = client.db(configuration.db);
-        var bulk = db.collection('unordered_bulk_promise_form').initializeUnorderedBulkOp({ w: 1 });
+        var bulk = db
+          .collection('unordered_bulk_promise_form')
+          .initializeUnorderedBulkOp({ writeConcern: { w: 1 } });
         bulk.insert({ a: 1 });
         return bulk
           .execute()
@@ -329,7 +331,9 @@ describe('Promises (Collection)', function () {
       const client = configuration.newClient(url);
       client.connect().then(function (client) {
         var db = client.db(configuration.db);
-        var bulk = db.collection('unordered_bulk_promise_form').initializeOrderedBulkOp({ w: 1 });
+        var bulk = db
+          .collection('unordered_bulk_promise_form')
+          .initializeOrderedBulkOp({ writeConcern: { w: 1 } });
         bulk.insert({ a: 1 });
         return bulk
           .execute()

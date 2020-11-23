@@ -109,7 +109,7 @@ export type {
   OperationTime,
   ResumeOptions
 } from './change_stream';
-export type { AuthMechanism, AuthMechanismEnum } from './cmap/auth/defaultAuthProviders';
+export type { AuthMechanism, AuthMechanismId } from './cmap/auth/defaultAuthProviders';
 export type { MongoCredentials, MongoCredentialsOptions } from './cmap/auth/mongo_credentials';
 export type {
   WriteProtocolMessageType,
@@ -174,7 +174,7 @@ export type {
   PkFactory,
   MongoURIOptions,
   LogLevel,
-  LogLevelEnum,
+  LogLevelId,
   Auth,
   DriverInfo
 } from './mongo_client';
@@ -232,13 +232,13 @@ export type { ValidateCollectionOptions } from './operations/validate_collection
 export type {
   ReadConcern,
   ReadConcernLike,
-  ReadConcernLevelEnum,
-  ReadConcernLevel
+  ReadConcernLevel,
+  ReadConcernLevelId
 } from './read_concern';
 export type {
   ReadPreferenceLike,
+  ReadPreferenceModeId,
   ReadPreferenceMode,
-  ReadPreferenceModeEnum,
   ReadPreferenceOptions,
   ReadPreferenceLikeOptions,
   ReadPreferenceFromOptions,

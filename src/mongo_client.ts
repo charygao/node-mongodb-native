@@ -21,7 +21,6 @@ import type { TagSet } from './sdam/server_description';
 import type { ConnectionOptions as TLSConnectionOptions } from 'tls';
 import type { TcpSocketConnectOpts as ConnectionOptions } from 'net';
 import type { MongoCredentials } from './cmap/auth/mongo_credentials';
-import { parseOptions } from './connection_string';
 
 /** @public */
 export const LogLevel = {

@@ -577,6 +577,11 @@ function endTransaction(session: ClientSession, commandName: string, callback: C
   );
 }
 
+function supportsRecoveryToken(session: ClientSession) {
+  const topology = session.topology;
+  return !!topology.s.options.useRecoveryToken;
+}
+
 /** @internal */
 export type ServerSessionId = { id: Binary };
 

@@ -38,8 +38,9 @@ export class GSSAPI extends AuthProvider {
 
     const { username, password, mechanismProperties } = credentials;
     const serviceName =
-      mechanismProperties['gssapiservicename'] ||
-      mechanismProperties['gssapiServiceName'] ||
+      mechanismProperties['SERVICE_NAME'] ??
+      mechanismProperties['gssapiservicename'] ??
+      mechanismProperties['gssapiServiceName'] ??
       'mongodb';
 
     performGssapiCanonicalizeHostName(

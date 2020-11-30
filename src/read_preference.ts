@@ -248,4 +248,21 @@ export class ReadPreference {
     if (this.hedge) readPreference.hedge = this.hedge;
     return readPreference;
   }
+
+  /** Returns searchParam form of this ReadPreference for a connection string */
+  toURIComponent(): [string, string][] {
+    if (this.tags) {
+      const tags = this.tags.map(
+        t =>
+          [
+            'readPreferenceTags',
+            `${Object.entries(t)
+              .map(([k, v]) => `${k}:${v}`)
+              .join(',')}`
+          ] as [string, string]
+      );
+      return [['readPreference', `${this.mode}`], ...tags];
+    }
+    return [['readPreference', `${this.mode}`]];
+  }
 }

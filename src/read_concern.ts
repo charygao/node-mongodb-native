@@ -36,6 +36,10 @@ export class ReadConcern {
     this.level = ReadConcernLevel[level] ?? level;
   }
 
+  toURIComponent(): [string, string][] {
+    return [['readConcernLevel', this.level]];
+  }
+
   /**
    * Construct a ReadConcern given an options object.
    *

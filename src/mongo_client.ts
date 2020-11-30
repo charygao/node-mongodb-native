@@ -575,7 +575,6 @@ export interface MongoOptions
       Pick<
         MongoClientOptions,
         | 'autoEncryption'
-        | 'compression'
         | 'compressors'
         | 'connectTimeoutMS'
         | 'dbName'

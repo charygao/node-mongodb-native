@@ -4,6 +4,7 @@ import { MongoDBNamespace, Callback } from '../utils';
 import type { Document } from '../bson';
 import type { Server } from '../sdam/server';
 import type { Db } from '../db';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export type ListDatabasesResult = string[] | Document[];
@@ -28,7 +29,7 @@ export class ListDatabasesOperation extends CommandOperation<ListDatabasesResult
     this.ns = new MongoDBNamespace('admin', '$cmd');
   }
 
-  execute(server: Server, callback: Callback<ListDatabasesResult>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<ListDatabasesResult>): void {
     const cmd: Document = { listDatabases: 1 };
     if (this.options.nameOnly) {
       cmd.nameOnly = Number(cmd.nameOnly);
@@ -42,7 +43,7 @@ export class ListDatabasesOperation extends CommandOperation<ListDatabasesResult
       cmd.authorizedDatabases = this.options.authorizedDatabases;
     }
 
-    super.executeCommand(server, cmd, callback);
+    super.executeCommand(server, session, cmd, callback);
   }
 }
 

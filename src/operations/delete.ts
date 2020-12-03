@@ -8,6 +8,7 @@ import type { Server } from '../sdam/server';
 import type { Collection } from '../collection';
 import type { Connection } from '../cmap/connection';
 import type { WriteCommandOptions } from '../cmap/wire_protocol/write_command';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export interface DeleteOptions extends CommandOperationOptions {
@@ -43,11 +44,11 @@ export class DeleteOperation extends AbstractOperation<Document> {
     return this.operations.every(op => (typeof op.limit !== 'undefined' ? op.limit > 0 : true));
   }
 
-  execute(server: Server, callback: Callback): void {
+  execute(server: Server, session: ClientSession, callback: Callback): void {
     server.remove(
       this.ns.toString(),
       this.operations,
-      this.options as WriteCommandOptions,
+      { ...this.options, readPreference: this.readPreference, session } as WriteCommandOptions,
       callback
     );
   }
@@ -66,10 +67,10 @@ export class DeleteOneOperation extends CommandOperation<DeleteResult> {
     this.filter = filter;
   }
 
-  execute(server: Server, callback: Callback<DeleteResult>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<DeleteResult>): void {
     const coll = this.collection;
     const filter = this.filter;
-    const options = { ...this.options, ...this.bsonOptions };
+    const options = { ...this.options, ...this.bsonOptions, session };
 
     options.single = true;
     removeDocuments(server, coll, filter, options, (err, r) => {
@@ -102,10 +103,10 @@ export class DeleteManyOperation extends CommandOperation<DeleteResult> {
     this.filter = filter;
   }
 
-  execute(server: Server, callback: Callback<DeleteResult>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<DeleteResult>): void {
     const coll = this.collection;
     const filter = this.filter;
-    const options = { ...this.options, ...this.bsonOptions };
+    const options = { ...this.options, ...this.bsonOptions, session };
 
     // a user can pass `single: true` in to `deleteMany` to remove a single document, theoretically
     if (typeof options.single !== 'boolean') {

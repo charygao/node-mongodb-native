@@ -136,11 +136,16 @@ export class IndexesOperation extends AbstractOperation<Document> {
     this.collection = collection;
   }
 
-  execute(server: Server, callback: Callback<Document>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document>): void {
     const coll = this.collection;
     const options = this.options;
 
-    indexInformation(coll.s.db, coll.collectionName, { full: true, ...options }, callback);
+    indexInformation(
+      coll.s.db,
+      coll.collectionName,
+      { full: true, ...options, readPreference: this.readPreference, session },
+      callback
+    );
   }
 }
 
@@ -168,7 +173,7 @@ export class CreateIndexesOperation extends CommandOperation<Document> {
     }
   }
 
-  execute(server: Server, callback: Callback<Document>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document>): void {
     const options = this.options;
     const indexes = this.indexes;
 
@@ -214,7 +219,7 @@ export class CreateIndexesOperation extends CommandOperation<Document> {
     // collation is set on each index, it should not be defined at the root
     this.options.collation = undefined;
 
-    super.executeCommand(server, cmd, (err, result) => {
+    super.executeCommand(server, session, cmd, (err, result) => {
       if (err) {
         callback(err);
         return;
@@ -261,9 +266,9 @@ export class EnsureIndexOperation extends CreateIndexOperation {
     this.collectionName = collectionName;
   }
 
-  execute(server: Server, callback: Callback): void {
+  execute(server: Server, session: ClientSession, callback: Callback): void {
     const indexName = this.indexes[0].name;
-    const cursor = this.db.collection(this.collectionName).listIndexes();
+    const cursor = this.db.collection(this.collectionName).listIndexes({ session });
     cursor.toArray((err, indexes) => {
       /// ignore "NamespaceNotFound" errors
       if (err && (err as MongoError).code !== 26) {
@@ -278,7 +283,7 @@ export class EnsureIndexOperation extends CreateIndexOperation {
         }
       }
 
-      super.execute(server, callback);
+      super.execute(server, session, callback);
     });
   }
 }
@@ -300,13 +305,9 @@ export class DropIndexOperation extends CommandOperation<Document> {
     this.indexName = indexName;
   }
 
-  execute(server: Server, callback: Callback<Document>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document>): void {
     const cmd = { dropIndexes: this.collection.collectionName, index: this.indexName };
-    super.executeCommand(server, cmd, (err, result) => {
-      if (typeof callback !== 'function') return;
-      if (err) return callback(err);
-      callback(undefined, result);
-    });
+    super.executeCommand(server, session, cmd, callback);
   }
 }
 
@@ -316,8 +317,8 @@ export class DropIndexesOperation extends DropIndexOperation {
     super(collection, '*', options);
   }
 
-  execute(server: Server, callback: Callback): void {
-    super.execute(server, err => {
+  execute(server: Server, session: ClientSession, callback: Callback): void {
+    super.execute(server, session, err => {
       if (err) return callback(err, false);
       callback(undefined, true);
     });
@@ -342,7 +343,7 @@ export class ListIndexesOperation extends CommandOperation<Document> {
     this.collectionNamespace = collection.s.namespace;
   }
 
-  execute(server: Server, callback: Callback<Document>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document>): void {
     const serverWireVersion = maxWireVersion(server);
     if (serverWireVersion < LIST_INDEXES_WIRE_VERSION) {
       const systemIndexesNS = this.collectionNamespace.withCollection('system.indexes');
@@ -351,7 +352,7 @@ export class ListIndexesOperation extends CommandOperation<Document> {
       server.query(
         systemIndexesNS,
         { query: { ns: collectionNS } },
-        { ...this.options, readPreference: this.readPreference },
+        { ...this.options, readPreference: this.readPreference, session },
         callback
       );
       return;
@@ -360,6 +361,7 @@ export class ListIndexesOperation extends CommandOperation<Document> {
     const cursor = this.options.batchSize ? { batchSize: this.options.batchSize } : {};
     super.executeCommand(
       server,
+      session,
       { listIndexes: this.collectionNamespace.collection, cursor },
       callback
     );
@@ -418,26 +420,30 @@ export class IndexExistsOperation extends AbstractOperation<boolean> {
     this.indexes = indexes;
   }
 
-  execute(server: Server, callback: Callback<boolean>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<boolean>): void {
     const coll = this.collection;
     const indexes = this.indexes;
-    const options = this.options;
 
-    indexInformation(coll.s.db, coll.collectionName, options, (err, indexInformation) => {
-      // If we have an error return
-      if (err != null) return callback(err);
-      // Let's check for the index names
-      if (!Array.isArray(indexes)) return callback(undefined, indexInformation[indexes] != null);
-      // Check in list of indexes
-      for (let i = 0; i < indexes.length; i++) {
-        if (indexInformation[indexes[i]] == null) {
-          return callback(undefined, false);
+    indexInformation(
+      coll.s.db,
+      coll.collectionName,
+      { ...this.options, readPreference: this.readPreference, session },
+      (err, indexInformation) => {
+        // If we have an error return
+        if (err != null) return callback(err);
+        // Let's check for the index names
+        if (!Array.isArray(indexes)) return callback(undefined, indexInformation[indexes] != null);
+        // Check in list of indexes
+        for (let i = 0; i < indexes.length; i++) {
+          if (indexInformation[indexes[i]] == null) {
+            return callback(undefined, false);
+          }
         }
-      }
 
-      // All keys found return true
-      return callback(undefined, true);
-    });
+        // All keys found return true
+        return callback(undefined, true);
+      }
+    );
   }
 }
 
@@ -454,12 +460,16 @@ export class IndexInformationOperation extends AbstractOperation<Document> {
     this.name = name;
   }
 
-  execute(server: Server, callback: Callback<Document>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document>): void {
     const db = this.db;
     const name = this.name;
-    const options = this.options;
 
-    indexInformation(db, name, options, callback);
+    indexInformation(
+      db,
+      name,
+      { ...this.options, readPreference: this.readPreference, session },
+      callback
+    );
   }
 }
 

@@ -3,6 +3,7 @@ import { CommandOperation, CommandOperationOptions } from './command';
 import type { Callback } from '../utils';
 import type { Server } from '../sdam/server';
 import type { Db } from '../db';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export type RemoveUserOptions = CommandOperationOptions;
@@ -18,8 +19,8 @@ export class RemoveUserOperation extends CommandOperation<boolean> {
     this.username = username;
   }
 
-  execute(server: Server, callback: Callback<boolean>): void {
-    super.executeCommand(server, { dropUser: this.username }, err => {
+  execute(server: Server, session: ClientSession, callback: Callback<boolean>): void {
+    super.executeCommand(server, session, { dropUser: this.username }, err => {
       callback(err, err ? false : true);
     });
   }

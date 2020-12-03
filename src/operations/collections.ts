@@ -6,6 +6,7 @@ import type { Db } from '../db';
 // eslint-disable-next-line
 import type { Collection } from '../collection';
 import type { Server } from '../sdam/server';
+import type { ClientSession } from '../sessions';
 
 export interface CollectionsOptions extends OperationOptions {
   nameOnly?: boolean;
@@ -22,15 +23,15 @@ export class CollectionsOperation extends AbstractOperation<Collection[]> {
     this.db = db;
   }
 
-  execute(server: Server, callback: Callback<Collection[]>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Collection[]>): void {
     const db = this.db;
-    let options: CollectionsOptions = this.options;
-
     const Collection = loadCollection();
 
-    options = Object.assign({}, options, { nameOnly: true });
     // Let's get the collection names
-    db.listCollections({}, options).toArray((err, documents) => {
+    db.listCollections(
+      {},
+      { ...this.options, nameOnly: true, readPreference: this.readPreference, session }
+    ).toArray((err, documents) => {
       if (err || !documents) return callback(err);
       // Filter collections removing any illegal ones
       documents = documents.filter(doc => doc.name.indexOf('$') === -1);

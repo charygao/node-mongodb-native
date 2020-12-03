@@ -7,6 +7,8 @@ import type { Collection } from '../collection';
 import type { ObjectId, Document } from '../bson';
 import type { BulkWriteResult, BulkWriteOptions } from '../bulk/common';
 import type { Server } from '../sdam/server';
+import type { ClientSession } from '../sessions';
+import { ReadPreference } from '..';
 
 /** @public */
 export interface InsertManyResult {
@@ -33,10 +35,14 @@ export class InsertManyOperation extends AbstractOperation<InsertManyResult> {
     this.docs = docs;
   }
 
-  execute(server: Server, callback: Callback<InsertManyResult>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<InsertManyResult>): void {
     const coll = this.collection;
     let docs = this.docs;
-    const options = { ...this.options, ...this.bsonOptions };
+    const options = {
+      ...this.options,
+      ...this.bsonOptions,
+      readPreference: this.readPreference
+    };
 
     if (!Array.isArray(docs)) {
       return callback(
@@ -50,7 +56,7 @@ export class InsertManyOperation extends AbstractOperation<InsertManyResult> {
     const operations = [{ insertMany: docs }];
     const bulkWriteOperation = new BulkWriteOperation(coll, operations, options);
 
-    bulkWriteOperation.execute(server, (err, result) => {
+    bulkWriteOperation.execute(server, session, (err, result) => {
       if (err || !result) return callback(err);
       callback(undefined, mapInsertManyResults(docs, result));
     });

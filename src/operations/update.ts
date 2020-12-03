@@ -6,6 +6,7 @@ import type { Server } from '../sdam/server';
 import type { Collection } from '../collection';
 import type { CollationOptions, WriteCommandOptions } from '../cmap/wire_protocol/write_command';
 import type { ObjectId, Document } from '../bson';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export interface UpdateOptions extends CommandOperationOptions {
@@ -56,11 +57,11 @@ export class UpdateOperation extends AbstractOperation<Document> {
     return this.operations.every(op => op.multi == null || op.multi === false);
   }
 
-  execute(server: Server, callback: Callback<Document>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document>): void {
     server.update(
       this.ns.toString(),
       this.operations,
-      this.options as WriteCommandOptions,
+      { ...this.options, readPreference: this.readPreference, session } as WriteCommandOptions,
       callback
     );
   }
@@ -86,11 +87,11 @@ export class UpdateOneOperation extends CommandOperation<UpdateResult> {
     this.update = update;
   }
 
-  execute(server: Server, callback: Callback<UpdateResult>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<UpdateResult>): void {
     const coll = this.collection;
     const filter = this.filter;
     const update = this.update;
-    const options = { ...this.options, ...this.bsonOptions };
+    const options = { ...this.options, ...this.bsonOptions, session };
 
     // Set single document update
     options.multi = false;
@@ -133,11 +134,11 @@ export class UpdateManyOperation extends CommandOperation<UpdateResult> {
     this.update = update;
   }
 
-  execute(server: Server, callback: Callback<UpdateResult>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<UpdateResult>): void {
     const coll = this.collection;
     const filter = this.filter;
     const update = this.update;
-    const options = { ...this.options, ...this.bsonOptions };
+    const options = { ...this.options, ...this.bsonOptions, session };
 
     // Set single document update
     options.multi = true;

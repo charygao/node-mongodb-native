@@ -10,6 +10,8 @@ import type { ObjectId, Document, BSONSerializeOptions } from '../bson';
 import type { Connection } from '../cmap/connection';
 import type { BulkWriteOptions } from '../bulk/common';
 import type { WriteConcernOptions } from '../write_concern';
+import type { ClientSession } from '../sessions';
+import { ReadPreference } from '../read_preference';
 
 /** @internal */
 export class InsertOperation extends AbstractOperation<Document> {
@@ -23,11 +25,11 @@ export class InsertOperation extends AbstractOperation<Document> {
     this.operations = ops;
   }
 
-  execute(server: Server, callback: Callback<Document>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document>): void {
     server.insert(
       this.ns.toString(),
       this.operations,
-      this.options as WriteCommandOptions,
+      { ...this.options, readPreference: this.readPreference, session } as WriteCommandOptions,
       callback
     );
   }
@@ -66,10 +68,15 @@ export class InsertOneOperation extends CommandOperation<InsertOneResult> {
     this.doc = doc;
   }
 
-  execute(server: Server, callback: Callback<InsertOneResult>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<InsertOneResult>): void {
     const coll = this.collection;
     const doc = this.doc;
-    const options = { ...this.options, ...this.bsonOptions };
+    const options = {
+      ...this.options,
+      ...this.bsonOptions,
+      readPreference: ReadPreference.primary,
+      session
+    };
 
     if (Array.isArray(doc)) {
       return callback(

@@ -2,6 +2,7 @@ import { CommandOperation, CommandOperationOptions, OperationParent } from './co
 import { MongoDBNamespace, Callback } from '../utils';
 import type { Server } from '../sdam/server';
 import type { Document } from '../bson';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export type RunCommandOptions = CommandOperationOptions;
@@ -17,9 +18,9 @@ export class RunCommandOperation<T = Document> extends CommandOperation<T> {
     this.command = command;
   }
 
-  execute(server: Server, callback: Callback): void {
+  execute(server: Server, session: ClientSession, callback: Callback): void {
     const command = this.command;
-    this.executeCommand(server, command, callback);
+    this.executeCommand(server, session, command, callback);
   }
 }
 

@@ -3,7 +3,7 @@ import { ReadConcern } from '../read_concern';
 import { WriteConcern, WriteConcernOptions } from '../write_concern';
 import { maxWireVersion, MongoDBNamespace, Callback, decorateWithExplain } from '../utils';
 import type { ReadPreference } from '../read_preference';
-import { commandSupportsReadConcern } from '../sessions';
+import { ClientSession, commandSupportsReadConcern } from '../sessions';
 import { MongoError } from '../error';
 import type { Logger } from '../logger';
 import type { Server } from '../sdam/server';
@@ -97,13 +97,19 @@ export abstract class CommandOperation<T> extends AbstractOperation<T> {
     return true;
   }
 
-  abstract execute(server: Server, callback: Callback<T>): void;
+  abstract execute(server: Server, session: ClientSession, callback: Callback<T>): void;
 
-  executeCommand(server: Server, cmd: Document, callback: Callback): void {
+  executeCommand(server: Server, session: ClientSession, cmd: Document, callback: Callback): void {
     // TODO: consider making this a non-enumerable property
     this.server = server;
 
-    const options = { ...this.options, ...this.bsonOptions, readPreference: this.readPreference };
+    const options = {
+      ...this.options,
+      ...this.bsonOptions,
+      readPreference: this.readPreference,
+      session
+    };
+
     const serverWireVersion = maxWireVersion(server);
     const inTransaction = this.session && this.session.inTransaction();
 

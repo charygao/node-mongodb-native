@@ -16,6 +16,7 @@ import type { Sort } from '../sort';
 import { MongoError } from '../error';
 import type { ObjectId } from '../bson';
 import { Aspect, defineAspects } from './operation';
+import type { ClientSession } from '../sessions';
 
 const exclusionList = [
   'explain',
@@ -108,7 +109,7 @@ export class MapReduceOperation extends CommandOperation<Document | Document[]> 
     this.reduce = reduce;
   }
 
-  execute(server: Server, callback: Callback<Document | Document[]>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document | Document[]>): void {
     const coll = this.collection;
     const map = this.map;
     const reduce = this.reduce;
@@ -167,7 +168,7 @@ export class MapReduceOperation extends CommandOperation<Document | Document[]> 
     }
 
     // Execute command
-    super.executeCommand(server, mapCommandHash, (err, result) => {
+    super.executeCommand(server, session, mapCommandHash, (err, result) => {
       if (err) return callback(err);
       // Check if we have an error
       if (1 !== result.ok || result.err || result.errmsg) {

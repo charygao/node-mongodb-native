@@ -6,6 +6,7 @@ import { MongoError } from '../error';
 import type { Server } from '../sdam/server';
 import { CommandOperation } from './command';
 import { Aspect, defineAspects } from './operation';
+import type { ClientSession } from '../sessions';
 
 /** @internal */
 export class FindOneOperation extends CommandOperation<Document> {
@@ -21,10 +22,10 @@ export class FindOneOperation extends CommandOperation<Document> {
     this.query = query;
   }
 
-  execute(server: Server, callback: Callback<Document>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document>): void {
     const coll = this.collection;
     const query = this.query;
-    const options = { ...this.options, ...this.bsonOptions };
+    const options = { ...this.options, ...this.bsonOptions, session };
 
     try {
       const cursor = coll.find(query, options).limit(-1).batchSize(1);

@@ -40,7 +40,7 @@ export class ListCollectionsOperation extends CommandOperation<string[]> {
     }
   }
 
-  execute(server: Server, callback: Callback<string[]>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<string[]>): void {
     if (maxWireVersion(server) < LIST_COLLECTIONS_WIRE_VERSION) {
       let filter = this.filter;
       const databaseName = this.db.s.namespace.db;
@@ -100,7 +100,7 @@ export class ListCollectionsOperation extends CommandOperation<string[]> {
       nameOnly: this.nameOnly
     };
 
-    return super.executeCommand(server, command, callback);
+    return super.executeCommand(server, session, command, callback);
   }
 }
 

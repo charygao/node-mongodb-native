@@ -170,8 +170,18 @@ function executeWithServerSelection(topology: Topology, operation: any, callback
         return;
       }
 
-      operation.execute(server, callback);
+      operation.execute(server, session, callback);
     });
+  }
+
+  if (readPreference && !readPreference.equals(ReadPreference.primary) && session.inTransaction()) {
+    callback(
+      new MongoError(
+        `Read preference in a transaction must be primary, not: ${readPreference.mode}`
+      )
+    );
+
+    return;
   }
 
   // select a server, and execute the operation against it
@@ -205,12 +215,12 @@ function executeWithServerSelection(topology: Topology, operation: any, callback
           operation.session.incrementTransactionNumber();
         }
 
-        operation.execute(server, callbackWithRetry);
+        operation.execute(server, session, callbackWithRetry);
         return;
       }
     }
 
-    operation.execute(server, callback);
+    operation.execute(server, session, callback);
   });
 }
 

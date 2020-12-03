@@ -15,6 +15,7 @@ import { CommandOperation, CommandOperationOptions } from './command';
 import { Sort, formatSort } from '../sort';
 import { isSharded } from '../cmap/wire_protocol/shared';
 import { ReadConcern } from '../read_concern';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export interface FindOptions extends CommandOperationOptions {
@@ -98,7 +99,7 @@ export class FindOperation extends CommandOperation<Document> {
     this.filter = filter != null && filter._bsontype === 'ObjectID' ? { _id: filter } : filter;
   }
 
-  execute(server: Server, callback: Callback<Document>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document>): void {
     this.server = server;
 
     const serverWireVersion = maxWireVersion(server);
@@ -161,7 +162,8 @@ export class FindOperation extends CommandOperation<Document> {
         fullResult: !!this.fullResponse,
         ...this.options,
         ...this.bsonOptions,
-        documentsReturnedIn: 'firstBatch'
+        documentsReturnedIn: 'firstBatch',
+        session
       },
       callback
     );

@@ -2,6 +2,7 @@ import { CommandOperation, CommandOperationOptions } from './command';
 import type { Callback } from '../utils';
 import type { Server } from '../sdam/server';
 import type { Db } from '../db';
+import type { ClientSession } from '../sessions';
 const levelValues = new Set(['off', 'slow_only', 'all']);
 
 /** @public */
@@ -41,14 +42,14 @@ export class SetProfilingLevelOperation extends CommandOperation<ProfilingLevel>
     this.level = level;
   }
 
-  execute(server: Server, callback: Callback<ProfilingLevel>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<ProfilingLevel>): void {
     const level = this.level;
 
     if (!levelValues.has(level)) {
       return callback(new Error('Error: illegal profiling level value ' + level));
     }
 
-    super.executeCommand(server, { profile: this.profile }, (err, doc) => {
+    super.executeCommand(server, session, { profile: this.profile }, (err, doc) => {
       if (err == null && doc.ok === 1) return callback(undefined, level);
       return err != null ? callback(err) : callback(new Error('Error with profile command'));
     });

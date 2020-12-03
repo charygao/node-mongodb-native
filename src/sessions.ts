@@ -795,12 +795,12 @@ function applySession(
 
   if (options) {
     ReadPreference.translate(options);
-    const readPreference = options.readPreference as ReadPreference;
-    if (readPreference && !readPreference.equals(ReadPreference.primary)) {
-      return new MongoError(
-        `Read preference in a transaction must be primary, not: ${readPreference.mode}`
-      );
-    }
+    // const readPreference = options.readPreference as ReadPreference;
+    // if (readPreference && !readPreference.equals(ReadPreference.primary)) {
+    //   return new MongoError(
+    //     `Read preference in a transaction must be primary, not: ${readPreference.mode}`
+    //   );
+    // }
   }
 
   // `autocommit` must always be false to differentiate from retryable writes

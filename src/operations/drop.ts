@@ -3,6 +3,7 @@ import { CommandOperation, CommandOperationOptions } from './command';
 import type { Callback } from '../utils';
 import type { Server } from '../sdam/server';
 import type { Db } from '../db';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export type DropCollectionOptions = CommandOperationOptions;
@@ -18,8 +19,8 @@ export class DropCollectionOperation extends CommandOperation<boolean> {
     this.name = name;
   }
 
-  execute(server: Server, callback: Callback<boolean>): void {
-    super.executeCommand(server, { drop: this.name }, (err, result) => {
+  execute(server: Server, session: ClientSession, callback: Callback<boolean>): void {
+    super.executeCommand(server, session, { drop: this.name }, (err, result) => {
       if (err) return callback(err);
       if (result.ok) return callback(undefined, true);
       callback(undefined, false);
@@ -38,8 +39,8 @@ export class DropDatabaseOperation extends CommandOperation<boolean> {
     super(db, options);
     this.options = options;
   }
-  execute(server: Server, callback: Callback<boolean>): void {
-    super.executeCommand(server, { dropDatabase: 1 }, (err, result) => {
+  execute(server: Server, session: ClientSession, callback: Callback<boolean>): void {
+    super.executeCommand(server, session, { dropDatabase: 1 }, (err, result) => {
       if (err) return callback(err);
       if (result.ok) return callback(undefined, true);
       callback(undefined, false);

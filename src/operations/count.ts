@@ -4,6 +4,7 @@ import type { Callback, MongoDBNamespace } from '../utils';
 import type { Document } from '../bson';
 import type { Server } from '../sdam/server';
 import type { Collection } from '../collection';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export interface CountOptions extends CommandOperationOptions {
@@ -31,7 +32,7 @@ export class CountOperation extends CommandOperation<number> {
     this.query = filter;
   }
 
-  execute(server: Server, callback: Callback<number>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<number>): void {
     const options = this.options;
     const cmd: Document = {
       count: this.collectionName,
@@ -54,7 +55,7 @@ export class CountOperation extends CommandOperation<number> {
       cmd.maxTimeMS = options.maxTimeMS;
     }
 
-    super.executeCommand(server, cmd, (err, result) => {
+    super.executeCommand(server, session, cmd, (err, result) => {
       callback(err, result ? result.n : 0);
     });
   }

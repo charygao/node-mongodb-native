@@ -5,6 +5,7 @@ import type { Document } from '../bson';
 import type { Server } from '../sdam/server';
 import type { Collection } from '../collection';
 import { MongoError } from '../error';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export type DistinctOptions = CommandOperationOptions;
@@ -38,7 +39,7 @@ export class DistinctOperation extends CommandOperation<Document[]> {
     this.query = query;
   }
 
-  execute(server: Server, callback: Callback<Document[]>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Document[]>): void {
     const coll = this.collection;
     const key = this.key;
     const query = this.query;
@@ -71,7 +72,7 @@ export class DistinctOperation extends CommandOperation<Document[]> {
       return;
     }
 
-    super.executeCommand(server, cmd, (err, result) => {
+    super.executeCommand(server, session, cmd, (err, result) => {
       if (err) {
         callback(err);
         return;

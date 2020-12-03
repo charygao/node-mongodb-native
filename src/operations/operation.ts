@@ -62,7 +62,7 @@ export abstract class AbstractOperation<T> {
     }
   }
 
-  abstract execute(server: Server, callback: Callback<T>): void;
+  abstract execute(server: Server, session: ClientSession, callback: Callback<T>): void;
 
   hasAspect(aspect: symbol): boolean {
     const ctor = this.constructor as OperationConstructor;

@@ -6,6 +6,7 @@ import type { Server } from '../sdam/server';
 import type { Collection } from '../collection';
 import type { CommandOperationOptions } from './command';
 import { MongoError } from '../error';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export interface RenameOptions extends CommandOperationOptions {
@@ -37,11 +38,11 @@ export class RenameOperation extends RunAdminCommandOperation {
     this.newName = newName;
   }
 
-  execute(server: Server, callback: Callback<Collection>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<Collection>): void {
     const Collection = loadCollection();
     const coll = this.collection;
 
-    super.execute(server, (err, doc) => {
+    super.execute(server, session, (err, doc) => {
       if (err) return callback(err);
       // We have an error
       if (doc.errmsg) {

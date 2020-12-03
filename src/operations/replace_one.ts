@@ -7,6 +7,7 @@ import type { Server } from '../sdam/server';
 import type { Collection } from '../collection';
 import type { CollationOptions } from '../cmap/wire_protocol/write_command';
 import type { UpdateResult } from './update';
+import type { ClientSession } from '../sessions';
 
 /** @public */
 export interface ReplaceOptions extends CommandOperationOptions {
@@ -48,11 +49,11 @@ export class ReplaceOneOperation extends CommandOperation<UpdateResult> {
     this.replacement = replacement;
   }
 
-  execute(server: Server, callback: Callback<UpdateResult>): void {
+  execute(server: Server, session: ClientSession, callback: Callback<UpdateResult>): void {
     const coll = this.collection;
     const filter = this.filter;
     const replacement = this.replacement;
-    const options = { ...this.options, ...this.bsonOptions };
+    const options = { ...this.options, ...this.bsonOptions, session };
 
     // Set single document update
     options.multi = false;

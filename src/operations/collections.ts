@@ -1,4 +1,4 @@
-import { OperationBase, OperationOptions } from './operation';
+import { AbstractOperation, OperationOptions } from './operation';
 import { loadCollection } from '../dynamic_loaders';
 import type { Callback } from '../utils';
 import type { Db } from '../db';
@@ -12,7 +12,7 @@ export interface CollectionsOptions extends OperationOptions {
 }
 
 /** @internal */
-export class CollectionsOperation extends OperationBase<CollectionsOptions, Collection[]> {
+export class CollectionsOperation extends AbstractOperation<CollectionsOptions, Collection[]> {
   db: Db;
 
   constructor(db: Db, options: CollectionsOptions) {

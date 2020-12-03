@@ -1,4 +1,4 @@
-import { Aspect, defineAspects, OperationBase } from './operation';
+import { Aspect, defineAspects, AbstractOperation } from './operation';
 import { BulkWriteOperation } from './bulk_write';
 import { MongoError } from '../error';
 import { prepareDocs } from './common_functions';
@@ -21,7 +21,7 @@ export interface InsertManyResult {
 }
 
 /** @internal */
-export class InsertManyOperation extends OperationBase<BulkWriteOptions, InsertManyResult> {
+export class InsertManyOperation extends AbstractOperation<BulkWriteOptions, InsertManyResult> {
   collection: Collection;
   docs: Document[];
 

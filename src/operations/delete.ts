@@ -1,4 +1,4 @@
-import { defineAspects, Aspect, OperationBase, Hint } from './operation';
+import { defineAspects, Aspect, AbstractOperation, Hint } from './operation';
 import { removeDocuments } from './common_functions';
 import { CommandOperation, CommandOperationOptions } from './command';
 import { isObject } from 'util';
@@ -28,7 +28,7 @@ export interface DeleteResult {
 }
 
 /** @internal */
-export class DeleteOperation extends OperationBase<DeleteOptions, Document> {
+export class DeleteOperation extends AbstractOperation<DeleteOptions, Document> {
   operations: Document[];
 
   constructor(ns: MongoDBNamespace, ops: Document[], options: DeleteOptions) {

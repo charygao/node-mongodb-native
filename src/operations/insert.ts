@@ -1,5 +1,5 @@
 import { MongoError } from '../error';
-import { defineAspects, Aspect, OperationBase } from './operation';
+import { defineAspects, Aspect, AbstractOperation } from './operation';
 import { CommandOperation } from './command';
 import { applyRetryableWrites, Callback, MongoDBNamespace } from '../utils';
 import { prepareDocs } from './common_functions';
@@ -12,7 +12,7 @@ import type { BulkWriteOptions } from '../bulk/common';
 import type { WriteConcernOptions } from '../write_concern';
 
 /** @internal */
-export class InsertOperation extends OperationBase<BulkWriteOptions, Document> {
+export class InsertOperation extends AbstractOperation<BulkWriteOptions, Document> {
   operations: Document[];
 
   constructor(ns: MongoDBNamespace, ops: Document[], options: BulkWriteOptions) {

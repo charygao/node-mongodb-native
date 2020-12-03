@@ -1,4 +1,4 @@
-import { defineAspects, Aspect, OperationBase } from './operation';
+import { defineAspects, Aspect, AbstractOperation } from './operation';
 import { updateDocuments } from './common_functions';
 import { hasAtomicOperators, MongoDBNamespace, Callback } from '../utils';
 import { CommandOperation, CommandOperationOptions } from './command';
@@ -41,7 +41,7 @@ export interface UpdateResult {
 }
 
 /** @internal */
-export class UpdateOperation extends OperationBase<UpdateOptions, Document> {
+export class UpdateOperation extends AbstractOperation<UpdateOptions, Document> {
   operations: Document[];
 
   constructor(ns: MongoDBNamespace, ops: Document[], options: UpdateOptions) {

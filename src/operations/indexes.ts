@@ -1,5 +1,5 @@
 import { indexInformation, IndexInformationOptions } from './common_functions';
-import { OperationBase, Aspect, defineAspects } from './operation';
+import { AbstractOperation, Aspect, defineAspects } from './operation';
 import { MongoError } from '../error';
 import {
   maxWireVersion,
@@ -126,7 +126,7 @@ function makeIndexSpec(indexSpec: IndexSpecification, options: any): IndexDescri
 }
 
 /** @internal */
-export class IndexesOperation extends OperationBase<IndexInformationOptions, Document> {
+export class IndexesOperation extends AbstractOperation<IndexInformationOptions, Document> {
   collection: Collection;
 
   constructor(collection: Collection, options: IndexInformationOptions) {
@@ -401,7 +401,7 @@ export class ListIndexesCursor extends AbstractCursor {
 }
 
 /** @internal */
-export class IndexExistsOperation extends OperationBase<IndexInformationOptions, boolean> {
+export class IndexExistsOperation extends AbstractOperation<IndexInformationOptions, boolean> {
   collection: Collection;
   indexes: string | string[];
 
@@ -440,7 +440,7 @@ export class IndexExistsOperation extends OperationBase<IndexInformationOptions,
 }
 
 /** @internal */
-export class IndexInformationOperation extends OperationBase<IndexInformationOptions, Document> {
+export class IndexInformationOperation extends AbstractOperation<IndexInformationOptions, Document> {
   db: Db;
   name: string;
 

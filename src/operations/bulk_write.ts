@@ -1,5 +1,5 @@
 import { applyRetryableWrites, Callback } from '../utils';
-import { Aspect, defineAspects, OperationBase } from './operation';
+import { Aspect, defineAspects, AbstractOperation } from './operation';
 import type { Collection } from '../collection';
 import type {
   BulkOperationBase,
@@ -10,7 +10,7 @@ import type {
 import type { Server } from '../sdam/server';
 
 /** @internal */
-export class BulkWriteOperation extends OperationBase<BulkWriteOptions, BulkWriteResult> {
+export class BulkWriteOperation extends AbstractOperation<BulkWriteOptions, BulkWriteResult> {
   collection: Collection;
   operations: AnyBulkWriteOperation[];
 

@@ -8,7 +8,7 @@ import type { Topology } from './sdam/topology';
 import type { EventEmitter } from 'events';
 import type { Db } from './db';
 import type { Collection } from './collection';
-import type { OperationOptions, OperationBase, Hint } from './operations/operation';
+import type { OperationOptions, AbstractOperation, Hint } from './operations/operation';
 import type { ClientSession } from './sessions';
 import { ReadConcern } from './read_concern';
 import type { Connection } from './cmap/connection';
@@ -232,7 +232,7 @@ export function filterOptions(options: AnyOptions, names: string[]): AnyOptions 
  * @param args - Arguments to apply the provided operation
  * @param options - Options that modify the behavior of the method
  */
-export function executeLegacyOperation<T extends OperationBase>(
+export function executeLegacyOperation<T extends AbstractOperation>(
   topology: Topology,
   operation: (...args: any[]) => void | Promise<Document>,
   args: any[],

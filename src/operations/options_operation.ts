@@ -1,4 +1,4 @@
-import { OperationBase, OperationOptions } from './operation';
+import { AbstractOperation, OperationOptions } from './operation';
 import { MongoError } from '../error';
 import type { Callback } from '../utils';
 import type { Document } from '../bson';
@@ -6,7 +6,7 @@ import type { Collection } from '../collection';
 import type { Server } from '../sdam/server';
 
 /** @internal */
-export class OptionsOperation extends OperationBase<OperationOptions, Document> {
+export class OptionsOperation extends AbstractOperation<OperationOptions, Document> {
   collection: Collection;
 
   constructor(collection: Collection, options: OperationOptions) {

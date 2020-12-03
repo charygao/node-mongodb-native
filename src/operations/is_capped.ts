@@ -1,11 +1,11 @@
 import type { Callback } from '../utils';
 import type { Collection } from '../collection';
-import { OperationOptions, OperationBase } from './operation';
+import { OperationOptions, AbstractOperation } from './operation';
 import type { Server } from '../sdam/server';
 import { MongoError } from '..';
 
 /** @internal */
-export class IsCappedOperation extends OperationBase<OperationOptions, boolean> {
+export class IsCappedOperation extends AbstractOperation<OperationOptions, boolean> {
   collection: Collection;
 
   constructor(collection: Collection, options: OperationOptions) {

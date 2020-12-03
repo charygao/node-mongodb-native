@@ -1,4 +1,4 @@
-import { Aspect, OperationBase, OperationOptions } from './operation';
+import { Aspect, AbstractOperation, OperationOptions } from './operation';
 import { ReadConcern } from '../read_concern';
 import { WriteConcern, WriteConcernOptions } from '../write_concern';
 import { maxWireVersion, MongoDBNamespace, Callback, decorateWithExplain } from '../utils';
@@ -48,7 +48,7 @@ export interface OperationParent {
 }
 
 /** @internal */
-export abstract class CommandOperation<TResult = Document> extends OperationBase {
+export abstract class CommandOperation<TResult = Document> extends AbstractOperation {
   options: CommandOperationOptions;
   ns: MongoDBNamespace;
   readConcern?: ReadConcern;

@@ -35,7 +35,7 @@ export interface OperationOptions extends BSONSerializeOptions {
  * a specific aspect.
  * @internal
  */
-export abstract class OperationBase<
+export abstract class AbstractOperation<
   T extends OperationOptions = OperationOptions,
   TResult = Document
 > {

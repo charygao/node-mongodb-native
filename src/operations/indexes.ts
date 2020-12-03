@@ -164,7 +164,7 @@ export class CreateIndexesOperation extends CommandOperation<Document> {
   ) {
     super(parent, options);
 
-    this.options = options || {};
+    this.options = options ?? {};
     this.collectionName = collectionName;
 
     this.indexes = indexes;
@@ -300,7 +300,7 @@ export class DropIndexOperation extends CommandOperation<Document> {
   constructor(collection: Collection, indexName: string, options?: DropIndexesOptions) {
     super(collection, options);
 
-    this.options = options || {};
+    this.options = options ?? {};
     this.collection = collection;
     this.indexName = indexName;
   }
@@ -339,7 +339,7 @@ export class ListIndexesOperation extends CommandOperation<Document> {
   constructor(collection: Collection, options?: ListIndexesOptions) {
     super(collection, options);
 
-    this.options = options || {};
+    this.options = options ?? {};
     this.collectionNamespace = collection.s.namespace;
   }
 
@@ -352,7 +352,7 @@ export class ListIndexesOperation extends CommandOperation<Document> {
       server.query(
         systemIndexesNS,
         { query: { ns: collectionNS } },
-        { ...this.options, readPreference: this.readPreference, session },
+        { ...this.options, readPreference: this.readPreference },
         callback
       );
       return;
@@ -455,7 +455,7 @@ export class IndexInformationOperation extends AbstractOperation<Document> {
 
   constructor(db: Db, name: string, options?: IndexInformationOptions) {
     super(options);
-    this.options = options || {};
+    this.options = options ?? {};
     this.db = db;
     this.name = name;
   }

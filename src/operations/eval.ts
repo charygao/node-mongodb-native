@@ -27,7 +27,7 @@ export class EvalOperation extends CommandOperation<Document> {
   ) {
     super(db, options);
 
-    this.options = options || {};
+    this.options = options ?? {};
     this.code = code;
     this.parameters = parameters;
     // force primary read preference

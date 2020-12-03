@@ -222,7 +222,7 @@ export type {
   MapReduceOptions,
   FinalizeFunction
 } from './operations/map_reduce';
-export type { Hint, OperationOptions, AbstractOperation as OperationBase } from './operations/operation';
+export type { Hint, OperationOptions, AbstractOperation } from './operations/operation';
 export type { ProfilingLevelOptions } from './operations/profiling_level';
 export type { RemoveUserOptions } from './operations/remove_user';
 export type { RenameOptions } from './operations/rename';

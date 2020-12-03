@@ -8,7 +8,6 @@ import type { ObjectId, Document } from '../bson';
 import type { BulkWriteResult, BulkWriteOptions } from '../bulk/common';
 import type { Server } from '../sdam/server';
 import type { ClientSession } from '../sessions';
-import { ReadPreference } from '..';
 
 /** @public */
 export interface InsertManyResult {

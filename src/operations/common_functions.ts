@@ -134,7 +134,7 @@ export function removeDocuments(
   }
 
   // Create an empty options object if the provided one is null
-  options = options || {};
+  options = options ?? {};
 
   // Final options for retryable writes
   let finalOptions = Object.assign({}, options);

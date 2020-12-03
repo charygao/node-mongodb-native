@@ -1199,7 +1199,7 @@ export abstract class BulkOperationBase {
   /** An internal helper method. Do not invoke directly. Will be going away in the future */
   execute(options?: BulkWriteOptions, callback?: Callback<BulkWriteResult>): Promise<void> | void {
     if (typeof options === 'function') (callback = options), (options = {});
-    options = options || {};
+    options = options ?? {};
 
     const writeConcern = WriteConcern.fromOptions(options);
     if (writeConcern) {

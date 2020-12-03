@@ -59,7 +59,7 @@ export abstract class CommandOperation<T> extends AbstractOperation<T> {
 
   constructor(parent?: OperationParent, options?: CommandOperationOptions) {
     super(options);
-    this.options = options || {};
+    this.options = options ?? {};
 
     // NOTE: this was explicitly added for the add/remove user operations, it's likely
     //       something we'd want to reconsider. Perhaps those commands can use `Admin`

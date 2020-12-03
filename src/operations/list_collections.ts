@@ -30,7 +30,7 @@ export class ListCollectionsOperation extends CommandOperation<string[]> {
   constructor(db: Db, filter: Document, options?: ListCollectionsOptions) {
     super(db, options);
 
-    this.options = options || {};
+    this.options = options ?? {};
     this.db = db;
     this.filter = filter;
     this.nameOnly = !!this.options.nameOnly;

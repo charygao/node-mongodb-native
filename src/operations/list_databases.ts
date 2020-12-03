@@ -25,7 +25,7 @@ export class ListDatabasesOperation extends CommandOperation<ListDatabasesResult
 
   constructor(db: Db, options?: ListDatabasesOptions) {
     super(db, options);
-    this.options = options || {};
+    this.options = options ?? {};
     this.ns = new MongoDBNamespace('admin', '$cmd');
   }
 

@@ -105,7 +105,7 @@ function insertDocuments(
   callback: Callback<Document>
 ) {
   if (typeof options === 'function') (callback = options), (options = {});
-  options = options || {};
+  options = options ?? {};
   // Ensure we are operating on an array op docs
   docs = Array.isArray(docs) ? docs : [docs];
 

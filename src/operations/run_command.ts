@@ -14,7 +14,7 @@ export class RunCommandOperation<T = Document> extends CommandOperation<T> {
 
   constructor(parent: OperationParent | undefined, command: Document, options?: RunCommandOptions) {
     super(parent, options);
-    this.options = options || {};
+    this.options = options ?? {};
     this.command = command;
   }
 

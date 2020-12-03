@@ -56,7 +56,7 @@ export class FindAndModifyOperation extends CommandOperation<Document> {
     options?: FindAndModifyOptions
   ) {
     super(collection, options);
-    this.options = options || {};
+    this.options = options ?? {};
 
     // force primary read preference
     this.readPreference = ReadPreference.primary;

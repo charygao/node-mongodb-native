@@ -103,7 +103,7 @@ export class MapReduceOperation extends CommandOperation<Document | Document[]> 
   ) {
     super(collection, options);
 
-    this.options = options || {};
+    this.options = options ?? {};
     this.collection = collection;
     this.map = map;
     this.reduce = reduce;

@@ -37,7 +37,7 @@ export class AddUserOperation extends CommandOperation<Document> {
     this.db = db;
     this.username = username;
     this.password = password;
-    this.options = options || {};
+    this.options = options ?? {};
   }
 
   execute(server: Server, session: ClientSession, callback: Callback<Document>): void {

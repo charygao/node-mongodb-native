@@ -29,7 +29,7 @@ export class CollStatsOperation extends CommandOperation<Document> {
    */
   constructor(collection: Collection, options?: CollStatsOptions) {
     super(collection, options);
-    this.options = options || {};
+    this.options = options ?? {};
     this.collectionName = collection.collectionName;
   }
 

@@ -44,7 +44,7 @@ export class AggregateOperation<T = Document> extends CommandOperation<T> {
   constructor(parent: OperationParent, pipeline: Document[], options?: AggregateOptions) {
     super(parent, options);
 
-    this.options = options || {};
+    this.options = options ?? {};
     this.target =
       parent.s.namespace && parent.s.namespace.collection
         ? parent.s.namespace.collection

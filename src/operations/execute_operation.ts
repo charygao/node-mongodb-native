@@ -174,7 +174,12 @@ function executeWithServerSelection(topology: Topology, operation: any, callback
     });
   }
 
-  if (readPreference && !readPreference.equals(ReadPreference.primary) && session.inTransaction()) {
+  if (
+    readPreference &&
+    !readPreference.equals(ReadPreference.primary) &&
+    session &&
+    session.inTransaction()
+  ) {
     callback(
       new MongoError(
         `Read preference in a transaction must be primary, not: ${readPreference.mode}`

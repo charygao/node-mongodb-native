@@ -33,7 +33,7 @@ export class DistinctOperation extends CommandOperation<Document[]> {
   constructor(collection: Collection, key: string, query: Document, options?: DistinctOptions) {
     super(collection, options);
 
-    this.options = options || {};
+    this.options = options ?? {};
     this.collection = collection;
     this.key = key;
     this.query = query;

@@ -244,7 +244,7 @@ export function executeLegacyOperation<T>(
     throw new TypeError('This method requires an array of arguments to apply');
   }
 
-  options = options || {};
+  options = options ?? {};
 
   let callback = args[args.length - 1];
 
@@ -352,7 +352,7 @@ export function applyWriteConcern<T extends HasWriteConcern>(
   sources: { db?: Db; collection?: Collection },
   options?: OperationOptions & WriteConcernOptions
 ): T {
-  options = options || {};
+  options = options ?? {};
   const db = sources.db;
   const coll = sources.collection;
 
@@ -890,7 +890,7 @@ const NODE_DRIVER_VERSION = JSON.parse(
 ).version;
 
 export function makeClientMetadata(options: ClientMetadataOptions): ClientMetadata {
-  options = options || {};
+  options = options ?? {};
 
   const metadata: ClientMetadata = {
     driver: {
@@ -1003,7 +1003,7 @@ export function makeInterruptableAsyncInterval(
   let lastWakeTime: number;
   let stopped = false;
 
-  options = options || {};
+  options = options ?? {};
   const interval = options.interval || 1000;
   const minInterval = options.minInterval || 500;
   const immediate = typeof options.immediate === 'boolean' ? options.immediate : false;

@@ -69,7 +69,7 @@ export class Transaction {
 
   /** Create a transaction */
   constructor(options?: TransactionOptions) {
-    options = options || {};
+    options = options ?? {};
 
     this.state = TxnState.NO_TRANSACTION;
     this.options = {};

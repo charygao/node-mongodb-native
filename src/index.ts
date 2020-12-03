@@ -294,7 +294,7 @@ export type {
   MongoDBNamespace,
   InterruptableAsyncInterval
 } from './utils';
-export type { WriteConcern, W, WriteConcernOptions } from './write_concern';
+export type { WriteConcern, W, WriteConcernOptions, WriteConcernSettings } from './write_concern';
 export type { ExecutionResult } from './operations/execute_operation';
 export type { InternalAbstractCursorOptions } from './cursor/abstract_cursor';
 export type {

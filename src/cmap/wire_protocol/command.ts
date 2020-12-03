@@ -9,9 +9,11 @@ import type { Server } from '../../sdam/server';
 import type { Topology } from '../../sdam/topology';
 import type { ReadPreferenceLike } from '../../read_preference';
 import type { WriteCommandOptions } from './write_command';
+import type { WriteConcernOptions } from '../../write_concern';
 
 /** @public */
-export interface CommandOptions extends BSONSerializeOptions {
+export interface CommandOptions extends BSONSerializeOptions, WriteConcernOptions {
+  // FIXME: NODE-2781
   command?: boolean;
   slaveOk?: boolean;
   /** Specify read preference if command supports it */

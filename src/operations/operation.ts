@@ -37,7 +37,7 @@ const kSession = Symbol('session');
  * a specific aspect.
  * @internal
  */
-export abstract class AbstractOperation<T = Document> {
+export abstract class AbstractOperation<T> {
   ns!: MongoDBNamespace;
   cmd!: Document;
   readPreference: ReadPreference;
@@ -56,6 +56,10 @@ export abstract class AbstractOperation<T = Document> {
 
     // Pull the BSON serialize options from the already-resolved options
     this.bsonOptions = resolveBSONOptions(options);
+
+    if (options.session) {
+      this[kSession] = options.session;
+    }
   }
 
   abstract execute(server: Server, callback: Callback<T>): void;
@@ -75,10 +79,6 @@ export abstract class AbstractOperation<T = Document> {
 
   get session(): ClientSession {
     return this[kSession];
-  }
-
-  clearSession(): void {
-    // this[kSession] = undefined;
   }
 
   get canRetryRead(): boolean {

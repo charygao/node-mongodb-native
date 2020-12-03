@@ -48,7 +48,7 @@ export interface OperationParent {
 }
 
 /** @internal */
-export abstract class CommandOperation<TResult = Document> extends AbstractOperation {
+export abstract class CommandOperation<T> extends AbstractOperation<T> {
   options: CommandOperationOptions;
   ns: MongoDBNamespace;
   readConcern?: ReadConcern;
@@ -97,7 +97,7 @@ export abstract class CommandOperation<TResult = Document> extends AbstractOpera
     return true;
   }
 
-  abstract execute(server: Server, callback: Callback<TResult>): void;
+  abstract execute(server: Server, callback: Callback<T>): void;
 
   executeCommand(server: Server, cmd: Document, callback: Callback): void {
     // TODO: consider making this a non-enumerable property

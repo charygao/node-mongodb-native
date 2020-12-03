@@ -91,10 +91,7 @@ export function executeOperation<
   return maybePromise(callback, cb => {
     function executeCallback(err?: AnyError, result?: TResult) {
       if (session && session.owner === owner) {
-        session.endSession();
-        if (operation.session === session) {
-          operation.clearSession();
-        }
+        return session.endSession(err2 => cb(err2 || err, result));
       }
 
       cb(err, result);
@@ -105,9 +102,6 @@ export function executeOperation<
     } catch (e) {
       if (session && session.owner === owner) {
         session.endSession();
-        if (operation.session === session) {
-          operation.clearSession();
-        }
       }
 
       throw e;

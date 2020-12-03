@@ -261,11 +261,6 @@ export class Server extends EventEmitter {
       return;
     }
 
-    const error = basicReadValidations(this, options);
-    if (error) {
-      return callback(error);
-    }
-
     // Clone the options
     const finalOptions = Object.assign({}, options, { wireProtocolCommand: false });
 
@@ -422,12 +417,6 @@ function calculateRoundTripTime(oldRtt: number, duration: number): number {
 
   const alpha = 0.2;
   return alpha * duration + (1 - alpha) * oldRtt;
-}
-
-function basicReadValidations(server: Server, options?: CommandOptions) {
-  if (options?.readPreference && !(options.readPreference instanceof ReadPreference)) {
-    return new MongoError('readPreference must be an instance of ReadPreference');
-  }
 }
 
 function executeWriteOperation(

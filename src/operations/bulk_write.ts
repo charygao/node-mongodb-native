@@ -10,7 +10,8 @@ import type {
 import type { Server } from '../sdam/server';
 
 /** @internal */
-export class BulkWriteOperation extends AbstractOperation<BulkWriteOptions, BulkWriteResult> {
+export class BulkWriteOperation extends AbstractOperation<BulkWriteResult> {
+  options: BulkWriteOptions;
   collection: Collection;
   operations: AnyBulkWriteOperation[];
 
@@ -20,7 +21,7 @@ export class BulkWriteOperation extends AbstractOperation<BulkWriteOptions, Bulk
     options: BulkWriteOptions
   ) {
     super(options);
-
+    this.options = options;
     this.collection = collection;
     this.operations = operations;
   }

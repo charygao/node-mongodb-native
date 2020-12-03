@@ -6,8 +6,8 @@ import type { Callback, MongoDBNamespace } from '../utils';
 import type { Document } from '../bson';
 import type { Server } from '../sdam/server';
 import type { Collection } from '../collection';
-import type { WriteCommandOptions } from '../cmap/wire_protocol/write_command';
 import type { Connection } from '../cmap/connection';
+import type { WriteCommandOptions } from '../cmap/wire_protocol/write_command';
 
 /** @public */
 export interface DeleteOptions extends CommandOperationOptions {
@@ -28,11 +28,13 @@ export interface DeleteResult {
 }
 
 /** @internal */
-export class DeleteOperation extends AbstractOperation<DeleteOptions, Document> {
+export class DeleteOperation extends AbstractOperation<Document> {
+  options: DeleteOptions;
   operations: Document[];
 
   constructor(ns: MongoDBNamespace, ops: Document[], options: DeleteOptions) {
     super(options);
+    this.options = options;
     this.ns = ns;
     this.operations = ops;
   }

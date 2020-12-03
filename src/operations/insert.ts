@@ -12,11 +12,13 @@ import type { BulkWriteOptions } from '../bulk/common';
 import type { WriteConcernOptions } from '../write_concern';
 
 /** @internal */
-export class InsertOperation extends AbstractOperation<BulkWriteOptions, Document> {
+export class InsertOperation extends AbstractOperation<Document> {
+  options: BulkWriteOptions;
   operations: Document[];
 
   constructor(ns: MongoDBNamespace, ops: Document[], options: BulkWriteOptions) {
     super(options);
+    this.options = options;
     this.ns = ns;
     this.operations = ops;
   }

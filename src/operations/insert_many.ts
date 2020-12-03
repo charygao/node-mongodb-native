@@ -21,13 +21,14 @@ export interface InsertManyResult {
 }
 
 /** @internal */
-export class InsertManyOperation extends AbstractOperation<BulkWriteOptions, InsertManyResult> {
+export class InsertManyOperation extends AbstractOperation<InsertManyResult> {
+  options: BulkWriteOptions;
   collection: Collection;
   docs: Document[];
 
   constructor(collection: Collection, docs: Document[], options: BulkWriteOptions) {
     super(options);
-
+    this.options = options;
     this.collection = collection;
     this.docs = docs;
   }

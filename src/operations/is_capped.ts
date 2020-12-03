@@ -5,11 +5,13 @@ import type { Server } from '../sdam/server';
 import { MongoError } from '..';
 
 /** @internal */
-export class IsCappedOperation extends AbstractOperation<OperationOptions, boolean> {
+export class IsCappedOperation extends AbstractOperation<boolean> {
+  options: OperationOptions;
   collection: Collection;
 
   constructor(collection: Collection, options: OperationOptions) {
     super(options);
+    this.options = options;
     this.collection = collection;
   }
 

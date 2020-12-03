@@ -6,12 +6,13 @@ import type { Collection } from '../collection';
 import type { Server } from '../sdam/server';
 
 /** @internal */
-export class OptionsOperation extends AbstractOperation<OperationOptions, Document> {
+export class OptionsOperation extends AbstractOperation<Document> {
+  options: OperationOptions;
   collection: Collection;
 
   constructor(collection: Collection, options: OperationOptions) {
     super(options);
-
+    this.options = options;
     this.collection = collection;
   }
 

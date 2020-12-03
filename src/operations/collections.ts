@@ -12,12 +12,13 @@ export interface CollectionsOptions extends OperationOptions {
 }
 
 /** @internal */
-export class CollectionsOperation extends AbstractOperation<CollectionsOptions, Collection[]> {
+export class CollectionsOperation extends AbstractOperation<Collection[]> {
+  options: CollectionsOptions;
   db: Db;
 
   constructor(db: Db, options: CollectionsOptions) {
     super(options);
-
+    this.options = options;
     this.db = db;
   }
 

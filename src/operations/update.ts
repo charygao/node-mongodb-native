@@ -41,11 +41,13 @@ export interface UpdateResult {
 }
 
 /** @internal */
-export class UpdateOperation extends AbstractOperation<UpdateOptions, Document> {
+export class UpdateOperation extends AbstractOperation<Document> {
+  options: UpdateOptions;
   operations: Document[];
 
   constructor(ns: MongoDBNamespace, ops: Document[], options: UpdateOptions) {
     super(options);
+    this.options = options;
     this.ns = ns;
     this.operations = ops;
   }

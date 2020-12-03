@@ -1,6 +1,6 @@
 import { ReadPreference } from '../read_preference';
 import { MongoError, isRetryableError, AnyError } from '../error';
-import { Aspect, AbstractOperation, OperationOptions } from './operation';
+import { Aspect, AbstractOperation } from './operation';
 import { maxWireVersion, maybePromise, Callback } from '../utils';
 import { ServerType } from '../sdam/common';
 import type { Server } from '../sdam/server';
@@ -12,13 +12,7 @@ const MMAPv1_RETRY_WRITES_ERROR_CODE = 20;
 const MMAPv1_RETRY_WRITES_ERROR_MESSAGE =
   'This MongoDB deployment does not support retryable writes. Please add retryWrites=false to your connection string.';
 
-type ResultTypeFromOperation<TOperation> = TOperation extends AbstractOperation<
-  OperationOptions,
-  infer K
->
-  ? K
-  : never;
-type OptionsFromOperation<TOperation> = TOperation extends AbstractOperation<infer K, unknown>
+type ResultTypeFromOperation<TOperation> = TOperation extends AbstractOperation<infer K>
   ? K
   : never;
 
@@ -48,23 +42,19 @@ export interface ExecutionResult {
  * @param callback - The command result callback
  */
 export function executeOperation<
-  T extends AbstractOperation<TOptions, TResult>,
-  TOptions = OptionsFromOperation<T>,
+  T extends AbstractOperation<TResult>,
   TResult = ResultTypeFromOperation<T>
 >(topology: Topology, operation: T): Promise<TResult>;
 export function executeOperation<
-  T extends AbstractOperation<TOptions, TResult>,
-  TOptions = OptionsFromOperation<T>,
+  T extends AbstractOperation<TResult>,
   TResult = ResultTypeFromOperation<T>
 >(topology: Topology, operation: T, callback: Callback<TResult>): void;
 export function executeOperation<
-  T extends AbstractOperation<TOptions, TResult>,
-  TOptions = OptionsFromOperation<T>,
+  T extends AbstractOperation<TResult>,
   TResult = ResultTypeFromOperation<T>
 >(topology: Topology, operation: T, callback?: Callback<TResult>): Promise<TResult> | void;
 export function executeOperation<
-  T extends AbstractOperation<TOptions, TResult>,
-  TOptions = OptionsFromOperation<T>,
+  T extends AbstractOperation<TResult>,
   TResult = ResultTypeFromOperation<T>
 >(topology: Topology, operation: T, callback?: Callback<TResult>): Promise<TResult> | void {
   if (!(operation instanceof AbstractOperation)) {
@@ -79,7 +69,7 @@ export function executeOperation<
           return;
         }
 
-        executeOperation<T, TOptions, TResult>(topology, operation, cb);
+        executeOperation<T, TResult>(topology, operation, cb);
       });
     });
   }

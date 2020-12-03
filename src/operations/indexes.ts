@@ -126,12 +126,13 @@ function makeIndexSpec(indexSpec: IndexSpecification, options: any): IndexDescri
 }
 
 /** @internal */
-export class IndexesOperation extends AbstractOperation<IndexInformationOptions, Document> {
+export class IndexesOperation extends AbstractOperation<Document> {
+  options: IndexInformationOptions;
   collection: Collection;
 
   constructor(collection: Collection, options: IndexInformationOptions) {
     super(options);
-
+    this.options = options;
     this.collection = collection;
   }
 
@@ -401,7 +402,8 @@ export class ListIndexesCursor extends AbstractCursor {
 }
 
 /** @internal */
-export class IndexExistsOperation extends AbstractOperation<IndexInformationOptions, boolean> {
+export class IndexExistsOperation extends AbstractOperation<boolean> {
+  options: IndexInformationOptions;
   collection: Collection;
   indexes: string | string[];
 
@@ -411,7 +413,7 @@ export class IndexExistsOperation extends AbstractOperation<IndexInformationOpti
     options: IndexInformationOptions
   ) {
     super(options);
-
+    this.options = options;
     this.collection = collection;
     this.indexes = indexes;
   }
@@ -440,13 +442,14 @@ export class IndexExistsOperation extends AbstractOperation<IndexInformationOpti
 }
 
 /** @internal */
-export class IndexInformationOperation extends AbstractOperation<IndexInformationOptions, Document> {
+export class IndexInformationOperation extends AbstractOperation<Document> {
+  options: IndexInformationOptions;
   db: Db;
   name: string;
 
   constructor(db: Db, name: string, options?: IndexInformationOptions) {
     super(options);
-
+    this.options = options || {};
     this.db = db;
     this.name = name;
   }

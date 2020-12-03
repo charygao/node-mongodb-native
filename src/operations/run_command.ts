@@ -7,14 +7,13 @@ import type { Document } from '../bson';
 export type RunCommandOptions = CommandOperationOptions;
 
 /** @internal */
-export class RunCommandOperation<
-  T extends RunCommandOptions = RunCommandOptions,
-  TResult = Document
-> extends CommandOperation<T, TResult> {
+export class RunCommandOperation<T = Document> extends CommandOperation<T> {
+  options: RunCommandOptions;
   command: Document;
 
-  constructor(parent: OperationParent | undefined, command: Document, options?: T) {
+  constructor(parent: OperationParent | undefined, command: Document, options?: RunCommandOptions) {
     super(parent, options);
+    this.options = options || {};
     this.command = command;
   }
 
@@ -24,11 +23,8 @@ export class RunCommandOperation<
   }
 }
 
-export class RunAdminCommandOperation<
-  T extends RunCommandOptions = RunCommandOptions,
-  TResult = Document
-> extends RunCommandOperation<T, TResult> {
-  constructor(parent: OperationParent | undefined, command: Document, options?: T) {
+export class RunAdminCommandOperation<T = Document> extends RunCommandOperation<T> {
+  constructor(parent: OperationParent | undefined, command: Document, options?: RunCommandOptions) {
     super(parent, command, options);
     this.ns = new MongoDBNamespace('admin');
   }

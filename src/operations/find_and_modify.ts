@@ -40,7 +40,8 @@ export interface FindAndModifyOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class FindAndModifyOperation extends CommandOperation<FindAndModifyOptions, Document> {
+export class FindAndModifyOperation extends CommandOperation<Document> {
+  options: FindAndModifyOptions;
   collection: Collection;
   query: Document;
   sort?: Sort;
@@ -54,6 +55,7 @@ export class FindAndModifyOperation extends CommandOperation<FindAndModifyOption
     options?: FindAndModifyOptions
   ) {
     super(collection, options);
+    this.options = options || {};
 
     // force primary read preference
     this.readPreference = ReadPreference.primary;

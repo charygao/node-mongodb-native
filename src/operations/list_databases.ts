@@ -19,12 +19,12 @@ export interface ListDatabasesOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class ListDatabasesOperation extends CommandOperation<
-  ListDatabasesOptions,
-  ListDatabasesResult
-> {
+export class ListDatabasesOperation extends CommandOperation<ListDatabasesResult> {
+  options: ListDatabasesOptions;
+
   constructor(db: Db, options?: ListDatabasesOptions) {
     super(db, options);
+    this.options = options || {};
     this.ns = new MongoDBNamespace('admin', '$cmd');
   }
 

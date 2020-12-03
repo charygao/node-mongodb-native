@@ -18,7 +18,8 @@ export interface AddUserOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class AddUserOperation extends CommandOperation<AddUserOptions, Document> {
+export class AddUserOperation extends CommandOperation<Document> {
+  options: AddUserOptions;
   db: Db;
   username: string;
   password?: string;
@@ -35,6 +36,7 @@ export class AddUserOperation extends CommandOperation<AddUserOptions, Document>
     this.db = db;
     this.username = username;
     this.password = password;
+    this.options = options || {};
   }
 
   execute(server: Server, callback: Callback<Document>): void {

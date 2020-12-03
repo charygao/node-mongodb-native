@@ -13,7 +13,8 @@ export interface EvalOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class EvalOperation extends CommandOperation<EvalOptions, Document> {
+export class EvalOperation extends CommandOperation<Document> {
+  options: EvalOptions;
   code: Code;
   parameters?: Document | Document[];
 
@@ -25,6 +26,7 @@ export class EvalOperation extends CommandOperation<EvalOptions, Document> {
   ) {
     super(db, options);
 
+    this.options = options || {};
     this.code = code;
     this.parameters = parameters;
     // force primary read preference

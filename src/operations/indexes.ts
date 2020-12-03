@@ -144,7 +144,8 @@ export class IndexesOperation extends OperationBase<IndexInformationOptions, Doc
 }
 
 /** @internal */
-export class CreateIndexesOperation extends CommandOperation<CreateIndexesOptions, Document> {
+export class CreateIndexesOperation extends CommandOperation<Document> {
+  options: CreateIndexesOptions;
   collectionName: string;
   onlyReturnNameOfCreatedIndex?: boolean;
   indexes: IndexDescription[];
@@ -156,6 +157,8 @@ export class CreateIndexesOperation extends CommandOperation<CreateIndexesOption
     options?: CreateIndexesOptions
   ) {
     super(parent, options);
+
+    this.options = options || {};
     this.collectionName = collectionName;
 
     this.indexes = indexes;
@@ -283,12 +286,15 @@ export class EnsureIndexOperation extends CreateIndexOperation {
 export type DropIndexesOptions = CommandOperationOptions;
 
 /** @internal */
-export class DropIndexOperation extends CommandOperation<DropIndexesOptions, Document> {
+export class DropIndexOperation extends CommandOperation<Document> {
+  options: DropIndexesOptions;
   collection: Collection;
   indexName: string;
 
   constructor(collection: Collection, indexName: string, options?: DropIndexesOptions) {
     super(collection, options);
+
+    this.options = options || {};
     this.collection = collection;
     this.indexName = indexName;
   }
@@ -324,12 +330,14 @@ export interface ListIndexesOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class ListIndexesOperation extends CommandOperation<ListIndexesOptions, Document> {
+export class ListIndexesOperation extends CommandOperation<Document> {
+  options: ListIndexesOptions;
   collectionNamespace: MongoDBNamespace;
 
   constructor(collection: Collection, options?: ListIndexesOptions) {
     super(collection, options);
 
+    this.options = options || {};
     this.collectionNamespace = collection.s.namespace;
   }
 

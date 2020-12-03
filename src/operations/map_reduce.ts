@@ -78,7 +78,8 @@ interface MapReduceStats {
  * Run Map Reduce across a collection. Be aware that the inline option for out will return an array of results not a collection.
  * @internal
  */
-export class MapReduceOperation extends CommandOperation<MapReduceOptions, Document | Document[]> {
+export class MapReduceOperation extends CommandOperation<Document | Document[]> {
+  options: MapReduceOptions;
   collection: Collection;
   /** The mapping function. */
   map: MapFunction | string;
@@ -101,6 +102,7 @@ export class MapReduceOperation extends CommandOperation<MapReduceOptions, Docum
   ) {
     super(collection, options);
 
+    this.options = options || {};
     this.collection = collection;
     this.map = map;
     this.reduce = reduce;

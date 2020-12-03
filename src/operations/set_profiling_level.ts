@@ -15,15 +15,14 @@ export enum ProfilingLevel {
 export type SetProfilingLevelOptions = CommandOperationOptions;
 
 /** @internal */
-export class SetProfilingLevelOperation extends CommandOperation<
-  SetProfilingLevelOptions,
-  ProfilingLevel
-> {
+export class SetProfilingLevelOperation extends CommandOperation<ProfilingLevel> {
+  options: SetProfilingLevelOptions;
   level: ProfilingLevel;
   profile: 0 | 1 | 2;
 
   constructor(db: Db, level: ProfilingLevel, options: SetProfilingLevelOptions) {
     super(db, options);
+    this.options = options;
     switch (level) {
       case ProfilingLevel.off:
         this.profile = 0;

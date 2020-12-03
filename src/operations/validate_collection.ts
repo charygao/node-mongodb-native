@@ -11,10 +11,8 @@ export interface ValidateCollectionOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class ValidateCollectionOperation extends CommandOperation<
-  ValidateCollectionOptions,
-  Document
-> {
+export class ValidateCollectionOperation extends CommandOperation<Document> {
+  options: ValidateCollectionOptions;
   collectionName: string;
   command: Document;
 
@@ -29,6 +27,7 @@ export class ValidateCollectionOperation extends CommandOperation<
     }
 
     super(admin.s.db, options);
+    this.options = options;
     this.command = command;
     this.collectionName = collectionName;
   }

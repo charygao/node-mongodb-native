@@ -65,7 +65,8 @@ export interface FindOptions extends CommandOperationOptions {
 const SUPPORTS_WRITE_CONCERN_AND_COLLATION = 5;
 
 /** @internal */
-export class FindOperation extends CommandOperation<FindOptions, Document> {
+export class FindOperation extends CommandOperation<Document> {
+  options: FindOptions;
   filter: Document;
 
   constructor(
@@ -75,6 +76,8 @@ export class FindOperation extends CommandOperation<FindOptions, Document> {
     options: FindOptions = {}
   ) {
     super(collection, options);
+
+    this.options = options;
     this.ns = ns;
 
     if (typeof filter !== 'object' || Array.isArray(filter)) {

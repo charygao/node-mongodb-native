@@ -13,7 +13,8 @@ export type DistinctOptions = CommandOperationOptions;
  * Return a list of distinct values for the given key across a collection.
  * @internal
  */
-export class DistinctOperation extends CommandOperation<DistinctOptions, Document[]> {
+export class DistinctOperation extends CommandOperation<Document[]> {
+  options: DistinctOptions;
   collection: Collection;
   /** Field of the document to find distinct values for. */
   key: string;
@@ -31,6 +32,7 @@ export class DistinctOperation extends CommandOperation<DistinctOptions, Documen
   constructor(collection: Collection, key: string, query: Document, options?: DistinctOptions) {
     super(collection, options);
 
+    this.options = options || {};
     this.collection = collection;
     this.key = key;
     this.query = query;

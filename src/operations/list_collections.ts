@@ -20,7 +20,8 @@ export interface ListCollectionsOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class ListCollectionsOperation extends CommandOperation<ListCollectionsOptions, string[]> {
+export class ListCollectionsOperation extends CommandOperation<string[]> {
+  options: ListCollectionsOptions;
   db: Db;
   filter: Document;
   nameOnly: boolean;
@@ -29,6 +30,7 @@ export class ListCollectionsOperation extends CommandOperation<ListCollectionsOp
   constructor(db: Db, filter: Document, options?: ListCollectionsOptions) {
     super(db, options);
 
+    this.options = options || {};
     this.db = db;
     this.filter = filter;
     this.nameOnly = !!this.options.nameOnly;

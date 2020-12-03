@@ -65,7 +65,8 @@ export class UpdateOperation extends OperationBase<UpdateOptions, Document> {
 }
 
 /** @internal */
-export class UpdateOneOperation extends CommandOperation<UpdateOptions, UpdateResult> {
+export class UpdateOneOperation extends CommandOperation<UpdateResult> {
+  options: UpdateOptions;
   collection: Collection;
   filter: Document;
   update: Document;
@@ -77,6 +78,7 @@ export class UpdateOneOperation extends CommandOperation<UpdateOptions, UpdateRe
       throw new TypeError('Update document requires atomic operators');
     }
 
+    this.options = options;
     this.collection = collection;
     this.filter = filter;
     this.update = update;
@@ -114,7 +116,8 @@ export class UpdateOneOperation extends CommandOperation<UpdateOptions, UpdateRe
 }
 
 /** @internal */
-export class UpdateManyOperation extends CommandOperation<UpdateOptions, UpdateResult> {
+export class UpdateManyOperation extends CommandOperation<UpdateResult> {
+  options: UpdateOptions;
   collection: Collection;
   filter: Document;
   update: Document;
@@ -122,6 +125,7 @@ export class UpdateManyOperation extends CommandOperation<UpdateOptions, UpdateR
   constructor(collection: Collection, filter: Document, update: Document, options: UpdateOptions) {
     super(collection, options);
 
+    this.options = options;
     this.collection = collection;
     this.filter = filter;
     this.update = update;

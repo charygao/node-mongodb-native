@@ -64,15 +64,15 @@ export interface CreateCollectionOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class CreateCollectionOperation extends CommandOperation<
-  CreateCollectionOptions,
-  Collection
-> {
+export class CreateCollectionOperation extends CommandOperation<Collection> {
+  options: CreateCollectionOptions;
   db: Db;
   name: string;
 
   constructor(db: Db, name: string, options: CreateCollectionOptions = {}) {
     super(db, options);
+
+    this.options = options;
     this.db = db;
     this.name = name;
   }

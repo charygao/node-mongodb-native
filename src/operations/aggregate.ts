@@ -34,7 +34,8 @@ export interface AggregateOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class AggregateOperation<T = Document> extends CommandOperation<AggregateOptions, T> {
+export class AggregateOperation<T = Document> extends CommandOperation<T> {
+  options: AggregateOptions;
   target: string | typeof DB_AGGREGATE_COLLECTION;
   pipeline: Document[];
   hasWriteStage: boolean;
@@ -42,6 +43,7 @@ export class AggregateOperation<T = Document> extends CommandOperation<Aggregate
   constructor(parent: OperationParent, pipeline: Document[], options?: AggregateOptions) {
     super(parent, options);
 
+    this.options = options || {};
     this.target =
       parent.s.namespace && parent.s.namespace.collection
         ? parent.s.namespace.collection

@@ -51,13 +51,15 @@ export class DeleteOperation extends OperationBase<DeleteOptions, Document> {
   }
 }
 
-export class DeleteOneOperation extends CommandOperation<DeleteOptions, DeleteResult> {
+export class DeleteOneOperation extends CommandOperation<DeleteResult> {
+  options: DeleteOptions;
   collection: Collection;
   filter: Document;
 
   constructor(collection: Collection, filter: Document, options: DeleteOptions) {
     super(collection, options);
 
+    this.options = options;
     this.collection = collection;
     this.filter = filter;
   }
@@ -81,7 +83,8 @@ export class DeleteOneOperation extends CommandOperation<DeleteOptions, DeleteRe
   }
 }
 
-export class DeleteManyOperation extends CommandOperation<DeleteOptions, DeleteResult> {
+export class DeleteManyOperation extends CommandOperation<DeleteResult> {
+  options: DeleteOptions;
   collection: Collection;
   filter: Document;
 
@@ -92,6 +95,7 @@ export class DeleteManyOperation extends CommandOperation<DeleteOptions, DeleteR
       throw new TypeError('filter is a required parameter');
     }
 
+    this.options = options;
     this.collection = collection;
     this.filter = filter;
   }

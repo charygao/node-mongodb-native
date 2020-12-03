@@ -17,6 +17,7 @@ export interface RenameOptions extends CommandOperationOptions {
 
 /** @internal */
 export class RenameOperation extends RunAdminCommandOperation {
+  options: RenameOptions;
   collection: Collection;
   newName: string;
 
@@ -29,8 +30,9 @@ export class RenameOperation extends RunAdminCommandOperation {
     const toCollection = collection.s.namespace.withCollection(newName).toString();
     const dropTarget = typeof options.dropTarget === 'boolean' ? options.dropTarget : false;
     const cmd = { renameCollection: renameCollection, to: toCollection, dropTarget: dropTarget };
-    super(collection, cmd, options);
 
+    super(collection, cmd, options);
+    this.options = options;
     this.collection = collection;
     this.newName = newName;
   }

@@ -51,13 +51,15 @@ export interface InsertOneResult {
   result: Document;
 }
 
-export class InsertOneOperation extends CommandOperation<InsertOneOptions, InsertOneResult> {
+export class InsertOneOperation extends CommandOperation<InsertOneResult> {
+  options: InsertOneOptions;
   collection: Collection;
   doc: Document;
 
   constructor(collection: Collection, doc: Document, options: InsertOneOptions) {
     super(collection, options);
 
+    this.options = options;
     this.collection = collection;
     this.doc = doc;
   }

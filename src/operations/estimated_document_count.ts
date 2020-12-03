@@ -13,10 +13,8 @@ export interface EstimatedDocumentCountOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class EstimatedDocumentCountOperation extends CommandOperation<
-  EstimatedDocumentCountOptions,
-  number
-> {
+export class EstimatedDocumentCountOperation extends CommandOperation<number> {
+  options: EstimatedDocumentCountOptions;
   collectionName: string;
   query?: Document;
 
@@ -33,6 +31,7 @@ export class EstimatedDocumentCountOperation extends CommandOperation<
     }
 
     super(collection, options);
+    this.options = options;
     this.collectionName = collection.collectionName;
     if (query) {
       this.query = query;

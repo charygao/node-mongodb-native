@@ -18,13 +18,15 @@ export interface CountOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class CountOperation extends CommandOperation<CountOptions, number> {
+export class CountOperation extends CommandOperation<number> {
+  options: CountOptions;
   collectionName?: string;
   query: Document;
 
   constructor(namespace: MongoDBNamespace, filter: Document, options: CountOptions) {
     super(({ s: { namespace: namespace } } as unknown) as Collection, options);
 
+    this.options = options;
     this.collectionName = namespace.collection;
     this.query = filter;
   }

@@ -24,7 +24,8 @@ export interface ReplaceOptions extends CommandOperationOptions {
 }
 
 /** @internal */
-export class ReplaceOneOperation extends CommandOperation<ReplaceOptions, UpdateResult> {
+export class ReplaceOneOperation extends CommandOperation<UpdateResult> {
+  options: ReplaceOptions;
   collection: Collection;
   filter: Document;
   replacement: Document;
@@ -41,6 +42,7 @@ export class ReplaceOneOperation extends CommandOperation<ReplaceOptions, Update
       throw new TypeError('Replacement document must not contain atomic operators');
     }
 
+    this.options = options;
     this.collection = collection;
     this.filter = filter;
     this.replacement = replacement;

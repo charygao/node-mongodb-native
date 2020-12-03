@@ -48,10 +48,8 @@ export interface OperationParent {
 }
 
 /** @internal */
-export abstract class CommandOperation<
-  T extends CommandOperationOptions = CommandOperationOptions,
-  TResult = Document
-> extends OperationBase<T> {
+export abstract class CommandOperation<TResult = Document> extends OperationBase {
+  options: CommandOperationOptions;
   ns: MongoDBNamespace;
   readConcern?: ReadConcern;
   writeConcern?: WriteConcern;
@@ -59,8 +57,9 @@ export abstract class CommandOperation<
   fullResponse?: boolean;
   logger?: Logger;
 
-  constructor(parent?: OperationParent, options?: T) {
+  constructor(parent?: OperationParent, options?: CommandOperationOptions) {
     super(options);
+    this.options = options || {};
 
     // NOTE: this was explicitly added for the add/remove user operations, it's likely
     //       something we'd want to reconsider. Perhaps those commands can use `Admin`
@@ -104,7 +103,7 @@ export abstract class CommandOperation<
     // TODO: consider making this a non-enumerable property
     this.server = server;
 
-    const options = { ...this.options, ...this.bsonOptions };
+    const options = { ...this.options, ...this.bsonOptions, readPreference: this.readPreference };
     const serverWireVersion = maxWireVersion(server);
     const inTransaction = this.session && this.session.inTransaction();
 
@@ -155,7 +154,7 @@ export abstract class CommandOperation<
     server.command(
       this.ns.toString(),
       cmd,
-      { fullResult: !!this.fullResponse, ...this.options },
+      { fullResult: !!this.fullResponse, ...options },
       callback
     );
   }

@@ -8,13 +8,15 @@ import { CommandOperation } from './command';
 import { Aspect, defineAspects } from './operation';
 
 /** @internal */
-export class FindOneOperation extends CommandOperation<FindOptions, Document> {
+export class FindOneOperation extends CommandOperation<Document> {
+  options: FindOptions;
   collection: Collection;
   query: Document;
 
   constructor(collection: Collection, query: Document, options: FindOptions) {
     super(collection, options);
 
+    this.options = options;
     this.collection = collection;
     this.query = query;
   }

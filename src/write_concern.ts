@@ -89,13 +89,4 @@ export class WriteConcern {
     }
     return undefined;
   }
-
-  /** Returns searchParam form of this WriteConcern for a connection string */
-  toURIComponent(): [string, string][] {
-    return [
-      ['w', `${this.w}`],
-      ['wtimeoutMS', `${this.wtimeout}`],
-      ['journal', `${this.j ?? this.fsync}`]
-    ];
-  }
 }

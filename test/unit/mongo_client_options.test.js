@@ -313,7 +313,9 @@ describe('MongoOptions', function () {
   it('toURI should not emit defaults', function () {
     const uri = 'mongodb://localhost:1234,farawayHost:1235,downTheStreetHost/testDb';
     const options = parseOptions(uri);
-    expect(options.toURI()).to.equal(uri);
+    expect(options.toURI()).to.equal(
+      'mongodb://localhost:1234,farawayHost:1235,downTheStreetHost:27017/testDb'
+    );
   });
 
   it('toURI handles complex objects', function () {

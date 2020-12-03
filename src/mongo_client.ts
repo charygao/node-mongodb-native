@@ -21,6 +21,7 @@ import type { TagSet } from './sdam/server_description';
 import type { ConnectionOptions as TLSConnectionOptions } from 'tls';
 import type { TcpSocketConnectOpts as ConnectionOptions } from 'net';
 import type { MongoCredentials } from './cmap/auth/mongo_credentials';
+import { parseOptions } from './connection_string';
 
 /** @public */
 export const LogLevel = {
@@ -264,8 +265,7 @@ export class MongoClient extends EventEmitter implements OperationParent {
   options;
 
   // debugging
-  originalUri;
-  originalOptions;
+  private originalUri;
 
   constructor(url: string, options?: MongoClientOptions) {
     super();
@@ -277,9 +277,8 @@ export class MongoClient extends EventEmitter implements OperationParent {
       delete options.promiseLibrary;
     }
     this.originalUri = url;
-    this.originalOptions = options;
 
-    // this.options = parseOptions(url, options);
+    this.options = parseOptions(url, options);
 
     // The internal state
     this.s = {
@@ -634,10 +633,6 @@ export interface MongoOptions
    */
   tls: boolean;
 
-  /**
-   * Turn these options into a reusable options dictionary
-   */
-  toJSON(): Record<string, any>;
   /**
    * Turn these options into a reusable connection URI
    */

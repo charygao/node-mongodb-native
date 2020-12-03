@@ -912,9 +912,16 @@ function mongoOptionsToURI(this: MongoOptions): string {
       }
     })
     .join(',');
+
+  const defaultOptions = new CaseInsensitiveMap(
+    Object.entries(OPTIONS)
+      .filter(([, descriptor]) => typeof descriptor.default !== 'undefined')
+      .map(([k, d]) => [k, d.default])
+  );
+
   const searchParams: [string, string][] = [];
   for (const optionKey of URI_OPTIONS) {
-    let optionValue = Reflect.get(this, optionKey);
+    const optionValue = Reflect.get(this, optionKey);
 
     if (optionValue !== undefined && defaultOptions.get(optionKey.toLowerCase()) === optionValue) {
       continue;
@@ -940,7 +947,7 @@ function mongoOptionsToURI(this: MongoOptions): string {
           ]);
         continue;
       case 'authSource':
-        if (this.credentials?.source)
+        if (this.credentials?.source && this.credentials.source !== this.dbName)
           searchParams.push(['authSource', `${this.credentials.source}`]);
         continue;
       case 'compressors':
@@ -952,8 +959,8 @@ function mongoOptionsToURI(this: MongoOptions): string {
         searchParams.push(['compressors', `${this.compressors}`]);
         continue;
       case 'journal':
-        if (typeof this.writeConcern?.j !== 'undefined')
-          searchParams.push(['journal', `${this.writeConcern.j}`]);
+        if (this.writeConcern?.j)
+          searchParams.push(['journal', `${this.writeConcern.j ?? this.writeConcern.fsync}`]);
         continue;
       case 'w':
         if (this.writeConcern?.w) searchParams.push(['w', `${this.writeConcern.w}`]);
@@ -963,24 +970,33 @@ function mongoOptionsToURI(this: MongoOptions): string {
           searchParams.push(['wtimeoutMS', `${this.writeConcern.wtimeout}`]);
         continue;
       case 'readConcernLevel':
-        optionValue = Reflect.get(this, 'readConcern');
-        break;
+        if (this.readConcern?.level)
+          searchParams.push(['readConcernLevel', this.readConcern.level]);
+        continue;
       case 'readPreference':
         if (this.readPreference?.mode === defaultOptions.get('readpreference')?.mode) continue;
-        break;
-      case 'readPreferenceTags':
+        searchParams.push(['readPreference', this.readPreference.mode]);
+        continue;
+      case 'readPreferenceTags': {
         if (searchParams.filter(p => p[0] === 'readPreference').length > 1) continue;
-        optionValue = Reflect.get(this, 'readPreference');
-        break;
+        const tags =
+          this.readPreference.tags?.map(
+            t =>
+              [
+                'readPreferenceTags',
+                `${Object.entries(t)
+                  .map(([k, v]) => `${k}:${v}`)
+                  .join(',')}`
+              ] as [string, string]
+          ) ?? [];
+        searchParams.push(...tags);
+        continue;
+      }
     }
 
     if (!optionValue) continue;
 
-    if (typeof optionValue.toURIComponent === 'function') {
-      searchParams.push(...optionValue.toURIComponent());
-    } else {
-      searchParams.push([optionKey, String(optionValue)]);
-    }
+    searchParams.push([optionKey, String(optionValue)]);
   }
 
   let searchParamsString = searchParams.map(p => p.join('=')).join('&');

@@ -73,10 +73,6 @@ export abstract class AbstractOperation<T> {
     return ctor.aspects.has(aspect);
   }
 
-  set session(session: ClientSession) {
-    this[kSession] = session;
-  }
-
   get session(): ClientSession {
     return this[kSession];
   }
